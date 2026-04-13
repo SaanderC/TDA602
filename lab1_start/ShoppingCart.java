@@ -28,6 +28,13 @@ public class ShoppingCart {
                - add the name of the product to the pocket file.
                - print the new balance.
             */
+           int price = Store.getProductPrice(product);
+           int bal = wallet.getBalance();
+           if(price > bal){
+            break;
+           }
+           wallet.setBalance(bal - price);
+           pocket.addProduct(product);
 
             // Just to print everything again...
             print(wallet, pocket);
