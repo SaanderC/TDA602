@@ -53,6 +53,16 @@ public class ShoppingCart {
                - print the new balance.
             */
            
+
+        //    int price = Store.getProductPrice(product);
+        //    int bal = wallet.getBalance();
+        //    if(price > bal){
+        //     break;
+        //    }
+        //    Thread.sleep(2000);
+        //    wallet.setBalance(bal - price);
+        //    pocket.addProduct(product);
+        
            int price = Store.getProductPrice(product);
            if(wallet.safeWithdraw(price)){
                 pocket.addProduct(product);
