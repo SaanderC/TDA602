@@ -45,4 +45,16 @@ public class Wallet {
     public void close() throws Exception {
 	this.file.close();
     }
+    
+    public boolean safeWithdraw(int valueToWithdraw) throws Exception {
+        FileLock lock = file.getChannel().lock();
+        int balance = getBalance();
+        if (valueToWithdraw <= balance){
+            setBalance(balance - valueToWithdraw)
+            lock.release();
+            return true;
+        }
+        lock.release();
+        return false;
+    }
 }
