@@ -32,6 +32,10 @@ public class Pocket {
         this.file.seek(this.file.length());
         this.file.writeBytes(product+'\n');
         lock.release(); 
+
+        // Previous code:
+        // this.file.seek(this.file.length());
+        // this.file.writeBytes(product+'\n');
     }
 
     /**
@@ -51,6 +55,17 @@ public class Pocket {
         lock.release();
 
         return sb.toString();
+
+        // Previous code:
+        // StringBuilder sb = new StringBuilder();
+        // this.file.seek(0);
+        // String line;
+        // while((line = this.file.readLine()) != null) {
+        //     sb.append(line);
+        //     sb.append('\n');
+        // }
+
+        // return sb.toString();
     }
 
     /**
