@@ -1,5 +1,6 @@
 import backEnd.*;
 import java.util.Scanner;
+import java.lang.Thread;
 
 public class ShoppingCart {
     private static void print(Wallet wallet, Pocket pocket) throws Exception {
@@ -33,6 +34,7 @@ public class ShoppingCart {
            if(price > bal){
             break;
            }
+           Thread.sleep(2000);
            wallet.setBalance(bal - price);
            pocket.addProduct(product);
 
