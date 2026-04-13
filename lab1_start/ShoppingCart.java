@@ -12,13 +12,14 @@ public class ShoppingCart {
         System.out.println("Your current pocket is:\n" + pocket.getPocket());
     }
 
-    private static void logState(Wallet wallet, Pocket pocket, RandomAccessFile log) throws Exception {
-        log.writeBytes("Your current balance is: " + wallet.getBalance() + " credits.\n");
-        log.writeBytes(Store.asString() + "\n");
-        log.writeBytes("Your current pocket is:\n" + pocket.getPocket() + "\n");
+    private static String logState(Wallet wallet, Pocket pocket) throws Exception {
+        return ("Your current balance is: " + wallet.getBalance() + " credits.\n"
+        + Store.asString() + "\n" +
+        "Your current pocket is:\n" + pocket.getPocket() + "\n");
     }
 
     private static void addLog(RandomAccessFile log, String message) throws Exception {
+        log.seek(log.length());
         log.writeBytes(message + "\n");
     }
 
@@ -33,14 +34,15 @@ public class ShoppingCart {
         Scanner scanner = new Scanner(System.in);
 
         RandomAccessFile log = new RandomAccessFile(new File("log.txt"), "rw");
+        String logEntry = "";
         addLog(log, "\n");
-        addLog(log, "-------------------------------------------------------------------------\n");
+        logEntry += "-------------------------------------------------------------------------\n";
 
         print(wallet, pocket);
-        logState(wallet, pocket, log);
+        logEntry += logState(wallet, pocket);
 
         String product = scan(scanner);
-        addLog(log, "User input: " + product + "\n");
+        logEntry += "User input: " + product + "\n";
 
 
         while(!product.equals("quit")) {
@@ -50,26 +52,23 @@ public class ShoppingCart {
                - add the name of the product to the pocket file.
                - print the new balance.
             */
+           
            int price = Store.getProductPrice(product);
-           int bal = wallet.getBalance();
-           if(price > bal){
-            break;
+           if(wallet.safeWithdraw(price)){
+                pocket.addProduct(product);
            }
-           Thread.sleep(2000);
-           wallet.setBalance(bal - price);
-           pocket.addProduct(product);
+           else{
+            System.out.println("Not enough credit");
+            logEntry += "Not enough credit \n";
+           }
 
             // Just to print everything again...
             print(wallet, pocket);
-            logState(wallet, pocket, log);
+            logEntry += logState(wallet, pocket);
             product = scan(scanner);
         }
-        addLog(log, "-------------------------------------------------------------------------");
-
+        logEntry += "-------------------------------------------------------------------------";
+        addLog(log, logEntry);
     }
 
-    public boolean safeWithdraw(int valueToWithdraw) throws Exception {
-        
-        return false;
-    }
 }
