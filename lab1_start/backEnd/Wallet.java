@@ -2,6 +2,9 @@ package backEnd;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
+import java.lang.Thread;
+
 
 public class Wallet {
     /**
@@ -50,7 +53,8 @@ public class Wallet {
         FileLock lock = file.getChannel().lock();
         int balance = getBalance();
         if (valueToWithdraw <= balance){
-            setBalance(balance - valueToWithdraw)
+            Thread.sleep(2000);
+            setBalance(balance - valueToWithdraw);
             lock.release();
             return true;
         }
